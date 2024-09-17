@@ -13,5 +13,6 @@
    }
    else{
 	echo "No se han enviado datos";
+   }
 
 ?>
