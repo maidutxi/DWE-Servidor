@@ -4,7 +4,7 @@
         $patron = "/\b(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}\b/"; //para dd/mm/aaaa
         $arrayfechas=[];
         
-        preg_match_all($patron, $texto, $coincidencias); //guarda el array con las fechas
+        preg_match_all($patron, $texto, $coincidencias); //es una matriz, solo se guardan todas las fechas en la 1º línea, las demas no se utiliozan
         $arrayfechas=$coincidencias[0];
 
         return $arrayfechas;
