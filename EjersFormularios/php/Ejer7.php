@@ -1,23 +1,43 @@
 <?php
     if($_SERVER ["REQUEST_METHOD"]=="POST"){
-        if(empty ($_POST ["nombre"])){
-            $nombreErr="Se requiere el nombre";
-        }else{
-            $nombre=htmlspecialchars($_POST["nombre"]);
-            $nombre=stripslashes($nombre);
-            $nombre=trim($nombre);
+        $nombre=trim($_POST["nombre"]);
+        $email=trim($_POST["email"]);
+        $contraseña=($_POST["contraseña"]);
+        $contraeña2=($_POST["contraseña2"]);
+
+
+
+
+        
+
+        
+        if(empty ($nombre) || empty ($email) || empty ($contraseña) || empty ($contraeña2)){
+            echo "Todos los campos son obligatorios";
+        }
+        
+
+        if(!preg_match ("/^[a-zA-Z\s]+$/", $nombre)){
+            echo "El nombre solo permite mayúsculas, minúsculas y espacios";
         }
 
-        if(empty($_POST["email"])){
-            $emailErr="El correo es requerido";
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+            $emailErr="El formato del correo no es válido"
         }
+
+        $requisitosContraseña="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#?!])[A-Za-z\d@#?!]{6,}$/";
+
+        if(!preg_match($requisitosContraseña,$contraseña)){
+            echo "La contraseña tiene que tener al menos 6 caracteres,  una letra mayúscula, una letra minúscula, un número y  un símbolo;
+        }
+         
+        if($contraseña!=$requisitosContraseña){
+            echo "Las contraseñas tienen que ser iguales";
+        }
+        
         else{
-            $email=trim($_POST["email"]);
-            if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-                $emailErr="El formato del correo no es válido"
-            }
-
+        echo "Registro completado";
         }
+
 
         
     }
