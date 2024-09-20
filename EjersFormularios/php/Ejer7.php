@@ -11,7 +11,10 @@
 $nombreErr = "";
 $emailErr = "";
 $contraseñaErr = "";
-
+$nombre="";
+$email="";
+$contraseña="";
+$contraseña2="";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     if (empty($_POST["nombre"])) {
@@ -57,17 +60,18 @@ function test_input($data) {
 }
 ?>
 
+
 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-    <label>Nombre:</label><input type="text" name="nombre">
+    <label>Nombre:</label><input type="text" name="nombre" value="<?php echo $nombre;?>">
     <span style="color:red;"><?php echo $nombreErr; ?></span>
     <br>
-    <label>Correo Electrónico:</label><input type="text" name="email">
+    <label>Correo Electrónico:</label><input type="text" name="email" value="<?php echo $email;?>">
     <span style="color:red;"><?php echo $emailErr; ?></span>
     <br>
-    <label>Contraseña:</label><input type="password" name="contraseña">
+    <label>Contraseña:</label><input type="password" name="contraseña" value="<?php echo $contraseña;?>">
     <span style="color:red;"><?php echo $contraseñaErr; ?></span>
     <br>
-    <label>Confirmar Contraseña:</label><input type="password" name="contraseña2">
+    <label>Confirmar Contraseña:</label><input type="password" name="contraseña2" value="<?php echo $contraseña2; ?>">
     <input type="submit" value="Enviar">
 </form>
 

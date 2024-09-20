@@ -66,7 +66,9 @@
             if($usuario->get_contraseña==$usuario->get_contraseña2){
                 echo $usuario->get_nombre . "<br>" . $usuario ->get_email . " Las contraseñas coinciden."
             }
-            else{}
+            else{
+                echo $usuario->get_nombre . "<br>" . $usuario ->get_email . " Las contraseñas no coinciden."
+            }
             
         }
 
@@ -76,7 +78,15 @@
     ?>
 
     <form  method="post" action="<?php echo htmlspecialchars ($_SERVER["PHP_SELF"]); ?>">
-
+    <label>Nombre de Usuario:</label><input type="text" name="nombre" required>
+        <br>
+        <label>Correo Electrónico:</label><input type="email" name="email" required>
+        <br>
+        <label>Contraseña:</label><input type="password" name="contraseña" required>
+        <br>
+        <label>Repetir Contraseña:</label><input type="password" name="contraseña2" required>
+        <br>
+        <input type="submit" value="Enviar">
     </form>
 </body>
 </html>
