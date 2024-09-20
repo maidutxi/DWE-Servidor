@@ -9,10 +9,10 @@
     <?php
 
     class Registro {
-        private $nombre;
-        private $email;
-        private $contraseña;
-        private $repetirContraseña;
+        private $nombre="";
+        private $email="";
+        private $contraseña="";
+        private $repetirContraseña="";
 
         function __construct($nombre, $email, $contraseña, $repetirContraseña) {
             $this->nombre = $nombre;
@@ -50,13 +50,13 @@
     ?>
 
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <label>Nombre de Usuario:</label><input type="text" name="nombre" required>
+        <label>Nombre de Usuario:</label><input type="text" name="nombre" required value="<?php echo $nombre;?>">
         <br>
-        <label>Correo Electrónico:</label><input type="email" name="email" required>
+        <label>Correo Electrónico:</label><input type="email" name="email" required value="<?php echo $email;?>">
         <br>
-        <label>Contraseña:</label><input type="password" name="contraseña" required>
+        <label>Contraseña:</label><input type="password" name="contraseña" required value="<?php echo $contraseña;?>">
         <br>
-        <label>Repetir Contraseña:</label><input type="password" name="contraseña2" required>
+        <label>Repetir Contraseña:</label><input type="password" name="contraseña2" required value="<?php echo $contraseña2;?>">
         <br>
         <input type="submit" value="Enviar">
     </form>
