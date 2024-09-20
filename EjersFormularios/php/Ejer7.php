@@ -30,7 +30,7 @@
             echo "La contraseña tiene que tener al menos 6 caracteres,  una letra mayúscula, una letra minúscula, un número y  un símbolo;
         }
          
-        if($contraseña!=$requisitosContraseña){
+        if($contraseña!=$contraeña2){
             echo "Las contraseñas tienen que ser iguales";
         }
         
