@@ -1,6 +1,6 @@
 <?php
 
-if (isset($_COOKIE['visitas'])) {
+if (isset($_COOKIE["visitas"])) {
     
     $visitas = $_COOKIE['visitas'] + 1;
 } else {
@@ -32,13 +32,13 @@ if (isset($_POST['reset'])) {
         if ($visitas == 1) {
             echo "¡Bienvenido! Esta es tu primera visita.";
         } else {
-            echo "Has visitado esta página $visitas veces.";
+            echo "Has visitado esta página ".$visitas . "veces.";
         }
         ?>
     </h1>
 
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <button type="submit" name="reset">Reiniciar Contador</button>
+        <input type="submit" name="reset" value="Reiniciar Contador" >
     </form>
 </body>
 </html>
