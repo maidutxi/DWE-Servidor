@@ -37,6 +37,10 @@
             return $this->repetirContraseña;
         }
     }
+    $nombre="";
+    $email="";
+    $contraseña="";
+    $contraseña2="";
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $usuario = new Registro($_POST["nombre"], $_POST["email"], $_POST["contraseña"], $_POST["contraseña2"]);
