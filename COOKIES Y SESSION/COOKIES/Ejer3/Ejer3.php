@@ -1,10 +1,7 @@
 <?php
-    
-
+    $saludo="¡Bienvenido!";
     $background_color= "#FFF";
     $texto="#000";
-    $saludo="¡Bienvenido!";
-
     
         if(isset($_COOKIE["tema"])){
             if($_COOKIE["tema"]=="oscuro"){
@@ -12,11 +9,13 @@
                 $texto="#FFF";
             }
         }
+            
 
         if(isset($_COOKIE["idioma"])){
             if($_COOKIE["idioma"]=="euskera"){
                 $saludo="Ongi Etorri!";
             }
+            
         }
     
 ?>
