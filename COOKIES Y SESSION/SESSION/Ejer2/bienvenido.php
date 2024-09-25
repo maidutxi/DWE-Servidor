@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,9 +12,13 @@
 <body>
     <h1>
         <?php
-            echo "Hola";
+            
+            echo "Hola "  . htmlspecialchars($_SESSION["usuario"]);
+            
         ?>
+        
     </h1>
+    <a href="variablesSesion.php">Ir a variables Sesión</a>
     
 </body>
 </html>

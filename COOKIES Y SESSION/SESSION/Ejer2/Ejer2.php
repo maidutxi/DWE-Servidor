@@ -36,6 +36,6 @@ $contraseña="";
         <label>Contraseña:</label><br><input type="password" name="contraseña" required value="<?php echo $contraseña; ?>"><br>
         <input type="submit" name="comprobar" value="Iniciar Sesión">
     </form>
-    
+    <a href="variablesSesion.php">Ir a variables Sesión</a>
 </body>
 </html>
