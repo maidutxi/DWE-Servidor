@@ -14,11 +14,19 @@ session_start();
         <?php
             
             echo "Hola "  . htmlspecialchars($_SESSION["usuario"]);
-            
+            if(isset($_POST["Logout"])){
+                session_unset();
+                session_destroy();
+                header("Location:Ejer2.php");
+                
+            }
         ?>
         
     </h1>
     <a href="variablesSesion.php">Ir a variables Sesión</a>
+    <form method="post"action="Ejer2.php">
+    <input type="submit" value="Logout">
+    </form>
     
 </body>
 </html>

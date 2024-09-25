@@ -3,8 +3,10 @@ session_start();
 
 $usuario="";
 $contraseña="";
+
     if($_SERVER["REQUEST_METHOD"]=="POST"){
-        $usuario=$_POST["usuario"];
+        if(isset($_POST["usuario"]) && isset($_POST["contraseña"])){
+            $usuario=$_POST["usuario"];
         $contraseña=$_POST["contraseña"];
 
         if($usuario=="admin" && $contraseña=="1234"){
@@ -19,6 +21,8 @@ $contraseña="";
         else{
             echo ("El usuario y o contraseña no es correcto.");
         }
+        }
+        
     }
 
 ?>
