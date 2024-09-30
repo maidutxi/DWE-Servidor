@@ -91,8 +91,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     //insertar datos usuario
-    $sql = "INSERT INTO MyGuests (nombre, email, contraseña)
-    VALUES ($nombre, $email, $contraseña)";
+    $sql = "INSERT INTO Usuario (nombre, email, contraseña)
+    VALUES ('$nombre', '$email', '$contraseña')";
+
 
     if (mysqli_query($conn, $sql)) {
     echo "New record created successfully";
