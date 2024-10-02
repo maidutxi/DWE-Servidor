@@ -73,6 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($conn->connect_error) {
         die("Conexión fallida: " . $conn->connect_error);
     }
+    echo "Conexión exitosa";
 
     //crear tabla
     $sql = "CREATE TABLE IF NOT EXISTS Usuario (
@@ -95,14 +96,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     VALUES ('$nombre', '$email', '$contraseña')";
 
 
-    if (mysqli_query($conn, $sql)) {
-    echo "New record created successfully";
+    if ($conn->query($sql) === TRUE) {
+        echo "Nuevo registro creado con éxito";
     } else {
-    echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+        echo "Error: " . $sql . "<br>" . $conn->error;
     }
 
-    mysqli_close($conn);
-
+    $conn->close();
 }
 
 
