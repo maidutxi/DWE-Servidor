@@ -30,6 +30,7 @@
     <input type="submit" value="Enviar">
 </form>
 
+
 <h2>Login</h2>
 <form action="login.php" method="post">
     <label>Email:</label><br>

@@ -49,7 +49,7 @@
         } 
     }
 
-    
+
     //Conexion
     $servername = "db";
     $username = "root";
@@ -69,7 +69,7 @@
     $sql = "CREATE TABLE IF NOT EXISTS Usuario (
         id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         nombre VARCHAR(50) NOT NULL,
-        email VARCHAR(50) NOT NULL,
+        email VARCHAR(50) NOT NULL UNIQUE,
         contraseña VARCHAR(255) NOT NULL,
         fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )";
