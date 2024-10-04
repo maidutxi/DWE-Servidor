@@ -1,99 +1,108 @@
 <?php
-    $nombreErr = "";
-    $emailErr = "";
-    $contraseñaErr = "";
+session_start(); 
+
+$nombreErr = "";
+$emailErr = "";
+$contraseñaErr = "";
+
+// Función para limpiar la entrada de datos
+function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $nombre = test_input($_POST["nombre"]);
+    $email = test_input($_POST["email"]);
+    $contraseña = test_input($_POST["contraseña"]);
+    $contraseña2 = test_input($_POST["contraseña2"]);
+
     
-        // Función para limpiar la entrada de datos
-        function test_input($data) {
-            $data = trim($data);
-            $data = stripslashes($data);
-            $data = htmlspecialchars($data);
-            return $data;
+    if (empty($nombre)) {
+        $_SESSION['nombreErr'] = "El nombre es obligatorio";
+    } elseif (!preg_match("/^[a-zA-Z\s]+$/", $nombre)) {
+        $_SESSION['nombreErr'] = "El nombre solo permite mayúsculas, minúsculas y espacios";
+    } else {
+        $_SESSION['nombreErr'] = ""; 
+    }
+
+    
+    if (empty($email)) {
+        $_SESSION['emailErr'] = "El email es obligatorio";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $_SESSION['emailErr'] = "El formato del correo no es válido";
+    } else {
+        $_SESSION['emailErr'] = ""; 
+    }
+
+    
+    $requisitosContraseña = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#?!])[A-Za-z\d@#?!]{6,}$/";
+    if (empty($contraseña)) {
+        $_SESSION['contraseñaErr'] = "La contraseña es obligatoria";
+    } elseif (!preg_match($requisitosContraseña, $contraseña)) {
+        $_SESSION['contraseñaErr'] = "La contraseña debe tener al menos 6 caracteres, una mayúscula, una minúscula, un número y un símbolo.";
+    } elseif ($contraseña != $contraseña2) {
+        $_SESSION['contraseñaErr'] = "Las contraseñas no coinciden.";
+    } else {
+        $_SESSION['contraseñaErr'] = ""; 
+    }
+
+    
+    if (empty($_SESSION['nombreErr']) && empty($_SESSION['emailErr']) && empty($_SESSION['contraseñaErr'])) {
+
+        // Conexión 
+        $servername = "db";
+        $username = "root";
+        $password = "root";
+        $dbname = "mydatabase";
+
+        $conn = new mysqli($servername, $username, $password, $dbname);
+
+        if ($conn->connect_error) {
+            die("Conexión fallida: " . $conn->connect_error);
         }
-    
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $nombre=$_POST["nombre"];
-        $email=$_POST["email"];
-        $contraseña=$_POST["contraseña"];
-        $contraseña2=$_POST["contraseña2"];
+
         
+        $sql = "CREATE TABLE IF NOT EXISTS Usuario (
+            id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            nombre VARCHAR(50) NOT NULL,
+            email VARCHAR(50) NOT NULL UNIQUE,
+            contraseña VARCHAR(255) NOT NULL,
+            fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        )";
+
         
-        if (empty($_POST["nombre"])) {
-            $nombreErr = "El nombre es obligatorio";
+        $conn->query($sql);
+
+        
+        $sql = "SELECT * FROM Usuario WHERE email = '$email'";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $_SESSION['emailErr'] = "Ya existe una cuenta con este correo electrónico.";
         } else {
-            $nombre = test_input($_POST["nombre"]);
-            if (!preg_match("/^[a-zA-Z\s]+$/", $nombre)) {
-                $nombreErr = "El nombre solo permite mayúsculas, minúsculas y espacios";
+            
+            $sql = "INSERT INTO Usuario (nombre, email, contraseña)
+                    VALUES ('$nombre', '$email', '$contraseña')"; 
+
+            if ($conn->query($sql) === TRUE) {
+                
+                unset($_SESSION['nombreErr']);
+                unset($_SESSION['emailErr']);
+                unset($_SESSION['contraseñaErr']);
+            } else {
+                
+                $_SESSION['error'] = "Error al insertar datos: " . $conn->error;
             }
         }
-    
-       
-        if (empty($_POST["email"])) {
-            $emailErr = "El email es obligatorio";
-        } else {
-            $email = test_input($_POST["email"]);
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $emailErr = "El formato del correo no es válido";
-            }
-        }
-    
-        
-        $contraseña = test_input($_POST["contraseña"]);
-        $contraseña2 = test_input($_POST["contraseña2"]);
-        $requisitosContraseña = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#?!])[A-Za-z\d@#?!]{6,}$/" ;
-    
-        if (!preg_match($requisitosContraseña, $contraseña)) {
-            $contraseñaErr = "La contraseña debe tener al menos 6 caracteres, una mayúscula, una minúscula, un número y un símbolo.";
-        } elseif ($contraseña != $contraseña2) {
-            $contraseñaErr = "Las contraseñas no coinciden.";
-        } 
+
+        $conn->close();
     }
 
-
-    //Conexion
-    $servername = "db";
-    $username = "root";
-    $password = "root";
-    $dbname = "mydatabase";
-
-
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-
-    if ($conn->connect_error) {
-        die("Conexión fallida: " . $conn->connect_error);
-    }
-    echo "Conexión exitosa";
-
-    //crear tabla
-    $sql = "CREATE TABLE IF NOT EXISTS Usuario (
-        id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        nombre VARCHAR(50) NOT NULL,
-        email VARCHAR(50) NOT NULL UNIQUE,
-        contraseña VARCHAR(255) NOT NULL,
-        fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-    )";
-
-
-    if ($conn->query($sql) === TRUE) {
-        echo "Tabla Usuario creada correctamente (o ya existe).";
-    } else {
-        echo "Error al crear la tabla: " . $conn->error;
-    }
-
-    //insertar datos usuario
-    $sql = "INSERT INTO Usuario (nombre, email, contraseña)
-    VALUES ('$nombre', '$email', '$contraseña')";
-
-
-    if ($conn->query($sql) === TRUE) {
-        echo "Nuevo registro creado con éxito";
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-    }
-
-    $conn->close();
-
-
     
+    header("Location: RegistroLogin.php");
+    exit();
+}
 ?>
