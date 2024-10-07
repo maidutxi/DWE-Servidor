@@ -7,7 +7,7 @@
 </head>
 <body>
     <h3>Regístrate:</h3>
-    <form action="">
+    <form action="registro.php" method="post">
         <label>Nombre</label><br>
         <input type="text" name="nombre"> <br><br><br>
 
@@ -22,7 +22,7 @@
 
     </form><br><br>
 
-    <form action="">
+    <form action="login.php" method="post">
         <h3>Iniciar Sesión</h3>
         <label>Nombre:</label><br>
         <input type="text" name="nombre"> <br><br><br>
