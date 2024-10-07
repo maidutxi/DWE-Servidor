@@ -1,12 +1,12 @@
 <?php
-    s
+    
     if($_SERVER["REQUEST_METHOD"]=="POST"){
         
         //Conexion
         $servername="db";
         $username="root";
         $password="root";
-        $dbname="mydatabse";
+        $dbname="mydatabase";
 
         $conn=new mysqli($servername,$username,$password,$dbname);
 
@@ -21,12 +21,12 @@
         id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         nombre VARCHAR (40) NOT NULL UNIQUE,
         contraseña VARCHAR (20) NOT NULL,
-        fecha_registro TIMESTAMP DEFAULT CURENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 
         )";
 
         $pelis="CREATE TABLE IF NOT EXISTS Peliculas(
-        usuario VARCHAR (50),
+        usuario VARCHAR (40),
         nombrepel VARCHAR (160) NOT NULL,
         ISSAN INT (8) NOT NULL UNIQUE,
         año YEAR,
@@ -36,31 +36,39 @@
         FOREIGN KEY (usuario) REFERENCES usuarios(nombre)
         )";
 
-        if ($conn->quey($clientes)==TRUE){
+        if ($conn->query($clientes)==TRUE){
             echo "Tabla Clientes creada correctamente o ya existe.";
         }
         else{
             echo "Error al crear la tabla Clientes";
         }
 
-        if ($conn->quey($pelis)==TRUE){
+        if ($conn->query($pelis)==TRUE){
             echo "Tabla Peliculas creada correctamente o ya existe.";
         }
         else{
             echo "Error al crear la tabla Peliculas";
         }
 
-        //insert del usuario registrado
-        $sql="INSERT INTO Clientes (nombre, contraseña)
-        VALUES ('$nombre', '$contraseña')";
-
-        if($conn->query($sql)==TRUE){
-            echo "Nuevo registro creado con éxito";
+        if(!empty($_POST["nombre"]) && !empty($_POST["contraseña"]&& !empty($_POST["contraseña2"]))){
+            
+            if($_POST["contraseña"]==$_POST["contraseña2"]){
+            
+                //insert del usuario registrado
+                $sql="INSERT INTO Clientes (nombre, contraseña)
+                VALUES ('$nombre', '$contraseña')";
+    
+                if($conn->query($sql)==TRUE){
+                    echo "Nuevo registro creado con éxito";
+                }
+                else{
+                    echo "Error: ".$sql. "<br>" . $conn->error;
+                }
+    
+            }
         }
-        else{
-            echo "Error: ".$sql. "<br>" . $conn->error;
-        }
-
+        
+        
         $conn->close();
 
     }
