@@ -1,7 +1,8 @@
 <?php
-    session_start();
+    s
     if($_SERVER["REQUEST_METHOD"]=="POST"){
         
+        //Conexion
         $servername="db";
         $username="root";
         $password="root";
@@ -25,7 +26,7 @@
         )";
 
         $pelis="CREATE TABLE IF NOT EXISTS Peliculas(
-        usuarioVRACHAR (50),
+        usuario VARCHAR (50),
         nombrepel VARCHAR (160) NOT NULL,
         ISSAN INT (8) NOT NULL UNIQUE,
         año YEAR,
@@ -49,6 +50,7 @@
             echo "Error al crear la tabla Peliculas";
         }
 
+        //insert del usuario registrado
         $sql="INSERT INTO Clientes (nombre, contraseña)
         VALUES ('$nombre', '$contraseña')";
 
