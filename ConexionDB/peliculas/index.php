@@ -28,7 +28,7 @@ if (!isset($_SESSION["nombre"])) {
         <input type="text" name="issan" required><br><br>
 
         <label>Año: </label><br>
-        <input type="number" name="año" min="1900" max="2024" required><br>
+        <input type="number" name="año" min="1900" max="2024" optional><br>
 
         <label>Puntuación:</label>
         <select id="puntuacion" name="puntuacion">
@@ -45,18 +45,20 @@ if (!isset($_SESSION["nombre"])) {
     </form>
 
     <?php
+        // Conexión a la base de datos
+        $servername = "db";
+        $username = "root";
+        $password = "root";
+        $dbname = "mydatabase";
+
+        $conn = new mysqli($servername, $username, $password, $dbname);
+
+        if ($conn->connect_error) {
+            die("Conexión fallida: " . $conn->connect_error);
+        }
+
+        // Procesar el formulario al enviar
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $servername = "db";
-            $username = "root";
-            $password = "root";
-            $dbname = "mydatabase";
-
-            $conn = new mysqli($servername, $username, $password, $dbname);
-
-            if ($conn->connect_error) {
-                die("Conexión fallida: " . $conn->connect_error);
-            }
-
             $nombre = $_POST["nombre"];
             $issan = $_POST["issan"];
             $año = $_POST["año"];
@@ -66,7 +68,6 @@ if (!isset($_SESSION["nombre"])) {
             $sql = "SELECT * FROM Peliculas WHERE ISSAN = '$issan'";
             $result = $conn->query($sql);
 
-            //strlen es como el .length en java
             // Insertar película
             if ($result->num_rows == 0 && strlen($issan) == 8 && !empty($nombre)) {
                 $insert = "INSERT INTO Peliculas (usuario, nombrepel, ISSAN, año, puntuacion) 
@@ -87,7 +88,7 @@ if (!isset($_SESSION["nombre"])) {
                 }
             }
             // Eliminar película
-            elseif ($result->num_rows > 0 && empty($nombre)) {
+            elseif ($result->num_rows > 0 && empty($nombre) && empty($año)) {
                 $delete = "DELETE FROM Peliculas WHERE ISSAN = '$issan' AND usuario = '$usuario'";
                 if ($conn->query($delete) === TRUE) {
                     echo "Película eliminada.";
@@ -95,9 +96,35 @@ if (!isset($_SESSION["nombre"])) {
                     echo "Error: " . $conn->error;
                 }
             }
-
-            $conn->close();
         }
+
+        // Mostrar películas del usuario
+        $sql = "SELECT * FROM Peliculas WHERE usuario = '$usuario'";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            echo "<h2>Películas en tu colección:</h2>";
+            echo "<table border='1'>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>ISAN</th>
+                        <th>Año</th>
+                        <th>Puntuación</th>
+                    </tr>";
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>
+                        <td>" . htmlspecialchars($row["nombrepel"]) . "</td>
+                        <td>" . htmlspecialchars($row["ISSAN"]) . "</td>
+                        <td>" . htmlspecialchars($row["año"]) . "</td>
+                        <td>" . htmlspecialchars($row["puntuacion"]) . "</td>
+                      </tr>";
+            }
+            echo "</table>";
+        } else {
+            echo "No tienes películas en tu colección.";
+        }
+
+        $conn->close();
     ?>
 </body>
 </html>

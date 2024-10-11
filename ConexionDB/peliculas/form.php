@@ -15,7 +15,7 @@
         <input type="password" name="contraseña"><br><br><br>
            
         <label>Repetir Contraseña: </label> <br> 
-        <input type="password" name="contraseña"><br><br><br>
+        <input type="password" name="contraseña2"><br><br><br>
 
         <input type="submit" value="Enviar" name="registro">
 
