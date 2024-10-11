@@ -57,13 +57,15 @@ if (!isset($_SESSION["nombre"])) {
             die("Conexión fallida: " . $conn->connect_error);
         }
 
-        // Procesar el formulario al enviar
+        
+        $usuario = $_SESSION["nombre"];
+
+        
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $nombre = $_POST["nombre"];
             $issan = $_POST["issan"];
             $año = $_POST["año"];
             $puntuacion = $_POST["puntuacion"];
-            $usuario = $_SESSION["nombre"];
 
             $sql = "SELECT * FROM Peliculas WHERE ISSAN = '$issan'";
             $result = $conn->query($sql);
