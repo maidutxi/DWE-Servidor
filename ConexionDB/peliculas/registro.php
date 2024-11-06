@@ -6,14 +6,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $servername = "db";
     $username = "root";
     $password = "root";
-    $dbname = "mydatabase";
+    $dbname = "prueba";
 
-    $conn = new mysqli($servername, $username, $password, $dbname);
+    $conn = new mysqli($servername, $username, $password);
 
     if ($conn->connect_error) {
         die("Conexión fallida: " . $conn->connect_error);
     }
     echo "Conexión exitosa<br>";
+
+    // Crear la base de datos 
+    $sql = "CREATE DATABASE IF NOT EXISTS $dbname";
+    if ($conn->query($sql) === TRUE) {
+        echo "Base de datos '$dbname' creada o ya existe.<br>";
+    } else {
+        echo "Error al crear la base de datos: " . $conn->error . "<br>";
+    }
+
+    
+    if (!$conn->select_db($dbname)) {
+        echo "Error al seleccionar la base de datos: " . $conn->error . "<br>";
+    }
 
     // Crear tablas
     $clientes = "CREATE TABLE IF NOT EXISTS Clientes(
