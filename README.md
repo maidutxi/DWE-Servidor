@@ -1,1 +1,1 @@
-El ejercicio peliculas está dentro de ConexionDB/peliculas
+El ejercicio películas está dentro de ConexionDB/peliculas
